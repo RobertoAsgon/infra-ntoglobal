@@ -1,3 +1,0 @@
-<p><a href="https://imgbb.com/"><img style="display: block; margin-left: auto; margin-right: auto;" src="https://i.ibb.co/sWsx47q/Clique-Baixar.png" alt="Clique-Baixar" border="0" /></a></p>
-<p>&nbsp;</p>
-<p style="text-align: center;"><a title="Download" href="client/NTOGlobal.zip" target="_blank"><img src="https://refrimaq.org/wp-content/uploads/2015/05/botao_download_verde.png" alt="" width="238" height="95" /></a></p>

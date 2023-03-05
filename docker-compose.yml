@@ -1,48 +1,52 @@
-version: '3'
+version: "3.3"
 
-services: 
-  mysql:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: server1010
-    volumes:
-      - ./server-ntoglobal/database:/docker-entrypoint-initdb.d
+services:
+  ubuntu:
+    build:
+      context: ./servidor
+    container_name: Ubuntu
+    stdin_open: true
+    tty: true
     ports:
-      - "3306:3306"
+      - "7171:7171"
+      - "7172:7172"
+    volumes:
+      - ./servidor:/srv
+    depends_on:
+      - db
 
   web:
     build:
-      context: ./website-ntoglobal
-    container_name: web
-    links:
-      - mysql
-    ports:
-      - 80:80
+      context: ./website
+    container_name: Site
     volumes:
-      - ./website-ntoglobal/:/usr/share/nginx/html
-      - ./server-ntoglobal:/home/server-ntoglobal
+      - ./servidor/datapack:/srv
+      - ./website/html:/var/www/html
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+      - ubuntu
 
-  phpmyadmin:
+  db:
+    image: mysql:5.7
+    container_name: BancoDeDados
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: otserv
+      MYSQL_PASSWORD: 1234
+    volumes:
+      - ./servidor/schema:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+
+  dbAdminPainel:
     image: phpmyadmin/phpmyadmin:5.1.1
-    container_name: phpmyadmin
+    container_name: AdminBancoDeDados
     restart: always
     ports:
       - 1010:80
     links:
-      - mysql
+      - db
     environment:
       PMA_ARBITRARY: 1
-
-  server:
-    build:
-      context: ./server-ntoglobal
-    ports:
-      - 7171:7171
-      - 7172:7172
-    volumes:
-      - ./server-ntoglobal:/home/server-ntoglobal
-    depends_on:
-      - mysql
-      - web
-    stdin_open: true 
-    tty: true
